@@ -11,18 +11,25 @@
   },
   "dependencies": {
     "@emotion/cache": "latest",
-    "@emotion/react": "^11.10.4",
+    "@emotion/react": "^11.10.5",
     "@emotion/server": "latest",
-    "@emotion/styled": "^11.10.4",
-    "@mui/icons-material": "^5.10.9",
-    "@mui/material": "^5.10.10",
+    "@emotion/styled": "^11.10.5",
+    "@mui/icons-material": "^5.11.0",
+    "@mui/lab": "^5.0.0-alpha.112",
+    "@mui/material": "^5.11.0",
     "@mui/system": "^5.10.10",
+    "@reduxjs/toolkit": "^1.9.1",
+    "axios": "^1.2.1",
     "next": "latest",
     "prop-types": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-hook-form": "^7.40.0",
+    "react-redux": "^8.0.5",
+    "redux": "^4.2.0"
   },
   "devDependencies": {
+    "@redux-devtools/core": "^3.13.1",
     "eslint": "latest",
     "eslint-config-next": "latest"
   }
