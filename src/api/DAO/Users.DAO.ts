@@ -1,12 +1,10 @@
 import apiService from '../APIService'
 
 class UsersDAO {
-  api
+  public public
   prefix = '/v1/users'
 
-  constructor(api) {
-    this.api = api
-
+  constructor(private api) {
     this.public = {
       getAll: () => this.api.get(`${this.prefix}`),
       getMe: () => this.api.get(`${this.prefix}/me`),

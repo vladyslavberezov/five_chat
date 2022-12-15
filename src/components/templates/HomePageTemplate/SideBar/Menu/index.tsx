@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useState } from 'react'
+import { MouseEvent, MouseEventHandler, useState } from 'react'
 import {
   Avatar,
   MenuItem,
@@ -10,13 +10,13 @@ import {
   LogoutIcon,
   Tooltip,
   ListItemIcon,
-} from '/src/components/atoms/'
+} from 'components/atoms/'
 
 function ProfileMenu() {
-  const [anchorEl, setAnchorEl] = useState(null)
+  const [anchorEl, setAnchorEl] = useState<EventTarget & HTMLButtonElement>(null)
   const open = Boolean(anchorEl)
 
-  const handleClick = (event) => {
+  const handleClick: MouseEventHandler<HTMLButtonElement> = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
   const handleClose = () => {

@@ -1,4 +1,4 @@
-import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText, Typography } from '../../../../atoms'
+import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText, Typography } from 'components/atoms'
 
 function ChatList() {
   return (

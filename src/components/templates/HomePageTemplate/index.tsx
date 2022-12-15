@@ -1,20 +1,12 @@
 import * as React from 'react'
-import { useState, useEffect } from 'react'
-import {
-  AppBar,
-  Box,
-  IconButton,
-  Toolbar,
-  Typography,
-  CssBaseline,
-  MenuIcon
-} from '/src/components/atoms/'
+import { useEffect, useState } from 'react'
+import { AppBar, Box, CssBaseline, IconButton, MenuIcon, Toolbar, Typography } from 'components/atoms/'
 import SideBar from './SideBar'
 
 const drawerWidth = 300
 
 function HomePageTemplate() {
-  const [mobileOpen, setMobileOpen] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState<boolean>(false)
 
   useEffect(() => {
     // TODO: fetch contacts
@@ -43,14 +35,14 @@ function HomePageTemplate() {
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { sm: 'none' } }}
           >
-            <MenuIcon />
+            <MenuIcon/>
           </IconButton>
           <Typography variant="h6" noWrap component="div">
             My Chat
           </Typography>
         </Toolbar>
       </AppBar>
-      <SideBar open={mobileOpen} onClose={handleDrawerToggle} />
+      <SideBar open={mobileOpen} onClose={handleDrawerToggle}/>
       <Box
         component="main"
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}

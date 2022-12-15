@@ -9,7 +9,7 @@ import { styled } from '@mui/material/styles';
 // Add support for the sx prop for consistency with the other branches.
 const Anchor = styled('a')({});
 
-export const NextLinkComposed = React.forwardRef(function NextLinkComposed(props, ref) {
+export const NextLinkComposed = React.forwardRef(function NextLinkComposed(props: any, ref) {
   const { to, linkAs, replace, scroll, shallow, prefetch, locale, ...other } = props;
 
   return (
@@ -42,7 +42,7 @@ NextLinkComposed.propTypes = {
 
 // A styled version of the Next.js Link component:
 // https://nextjs.org/docs/api-reference/next/link
-const Link = React.forwardRef(function Link(props, ref) {
+const Link = React.forwardRef(function Link(props: any, ref) {
   const {
     activeClassName = 'active',
     as,

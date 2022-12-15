@@ -1,9 +1,11 @@
 import * as React from 'react'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import { Grid, Typography, Box, Avatar, FormControlLabel, Button, Link,Checkbox, TextField, CssBaseline, Container } from 'src/components/atoms/'
-import { useState } from 'react'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { AuthDAO, UsersDAO } from '../src/api/DAO'
+import { useRecoilState } from 'recoil'
+import { userStore } from 'src/store'
 
 function Copyright(props) {
   return (
@@ -21,12 +23,13 @@ function Copyright(props) {
 const theme = createTheme()
 
 export default function Login() {
+  const [user, setUser] = useRecoilState(userStore);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setFormData({
       ...formData,
@@ -34,7 +37,7 @@ export default function Login() {
     })
   };
 
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await AuthDAO.login({
       userCreds: formData.email,
@@ -73,8 +76,6 @@ export default function Login() {
               autoFocus
               onChange={handleInputChange}
               value={formData.email}
-              // onChange={(e) => setValue(e.target.value)}
-              // onChange={handleChange}
             />
             <TextField
               margin="normal"

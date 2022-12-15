@@ -1,4 +1,4 @@
-import { Avatar, List, ListItem, ListItemIcon, ListItemText } from '../../../../atoms'
+import { Avatar, List, ListItem, ListItemIcon, ListItemText } from 'components/atoms'
 
 function ContactsList() {
   return (
@@ -8,7 +8,7 @@ function ContactsList() {
           <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg"/>
         </ListItemIcon>
         <ListItemText primary="Remy Sharp">Remy Sharp</ListItemText>
-        <ListItemText secondary="online" align="right"></ListItemText>
+        <ListItemText secondary="online"></ListItemText>
       </ListItem>
       <ListItem button key="Alice">
         <ListItemIcon>

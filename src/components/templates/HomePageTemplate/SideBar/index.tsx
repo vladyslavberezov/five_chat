@@ -1,19 +1,19 @@
 import * as React from 'react'
-import { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
-import { Box, Divider, Drawer, Tab, TabContext, TabList, TabPanel } from '/src/components/atoms/'
+import { useState } from 'react'
+import { Box, Divider, Drawer, Tab, TabContext, TabList, TabPanel } from 'components/atoms/'
 import Menu from './Menu'
 import ContactsList from './ContactsList'
 import ChatList from './ChatList'
+import { TSideBarProps } from './types'
 
 const drawerWidth = 300
 
-function SideBar(props) {
+function SideBar(props: TSideBarProps) {
   const { window, onClose, open: mobileOpen } = props
-  const [tab, setTab] = useState('1')
+  const [tab, setTab] = useState<string>('1')
 
-  const handleTabChange = (event, newValue) => {
-    setTab(newValue)
+  const handleTabChange = (event: React.SyntheticEvent, value: string) => {
+    setTab(value)
   }
 
   const drawer = (
@@ -80,14 +80,6 @@ function SideBar(props) {
       </Drawer>
     </Box>
   )
-}
-
-SideBar.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
 }
 
 export default SideBar
