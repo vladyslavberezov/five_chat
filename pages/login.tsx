@@ -1,11 +1,22 @@
 import * as React from 'react'
 import { ChangeEvent, FormEvent, useState } from 'react'
-import { Grid, Typography, Box, Avatar, FormControlLabel, Button, Link,Checkbox, TextField, CssBaseline, Container } from 'src/components/atoms/'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import { useRouter } from 'next/router'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { AuthDAO, UsersDAO } from '../src/api/DAO'
-import { useRecoilState } from 'recoil'
-import { userStore } from 'src/store'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import {
+  Avatar,
+  Box,
+  Button,
+  Checkbox,
+  Container,
+  CssBaseline,
+  FormControlLabel,
+  Grid,
+  Link,
+  TextField,
+  Typography
+} from 'src/components/atoms/'
+import { AuthDAO } from 'src/api/DAO'
 
 function Copyright(props) {
   return (
@@ -23,12 +34,11 @@ function Copyright(props) {
 const theme = createTheme()
 
 export default function Login() {
-  const [user, setUser] = useRecoilState(userStore);
+  let router = useRouter()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
-
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setFormData({
@@ -39,12 +49,20 @@ export default function Login() {
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await AuthDAO.login({
+    const res = await AuthDAO.login({
       userCreds: formData.email,
       password: formData.password,
     });
-    const res = await UsersDAO.getMe();
-    console.log(res);
+
+    if (res?.data?.accessToken) {
+      await router.push('/')
+    } else {
+      console.log('wrong username or password')
+    }
+    // TODO: save token to the localStorage
+    // const usertoken = res?.data?.accessToken
+    // localStorage.setItem('user', JSON.stringify(usertoken));
+    // setAuth(usertoken)
   }
 
   return (

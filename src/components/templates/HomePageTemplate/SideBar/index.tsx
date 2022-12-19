@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Box, Divider, Drawer, Tab, TabContext, TabList, TabPanel } from 'components/atoms/'
 import Menu from './Menu'
 import ContactsList from './ContactsList'
@@ -10,7 +10,11 @@ const drawerWidth = 300
 
 function SideBar(props: TSideBarProps) {
   const { window, onClose, open: mobileOpen } = props
-  const [tab, setTab] = useState<string>('1')
+  const [tab, setTab] = useState<string | null>(null)
+
+  useEffect(() => {
+    setTab('1')
+  }, [])
 
   const handleTabChange = (event: React.SyntheticEvent, value: string) => {
     setTab(value)
@@ -19,29 +23,29 @@ function SideBar(props: TSideBarProps) {
   const drawer = (
     <div>
       <Menu/>
-
       <Divider/>
+      {tab && (
+        <TabContext value={tab}>
+          <TabList variant="fullWidth" onChange={handleTabChange} centered>
+            <Tab label="Contacts" value="0"/>
+            <Tab label="Chats" value="1"/>
+          </TabList>
+          <Divider/>
+          <TabPanel
+            value="0"
+            sx={{ padding: 0 }}
+          >
+            <ContactsList/>
+          </TabPanel>
 
-      <TabContext value={tab}>
-        <TabList variant="fullWidth" onChange={handleTabChange} centered>
-          <Tab label="Contacts" value="0"/>
-          <Tab label="Chats" value="1"/>
-        </TabList>
-        <Divider/>
-        <TabPanel
-          value="0"
-          sx={{ padding: 0 }}
-        >
-          <ContactsList/>
-        </TabPanel>
-
-        <TabPanel
-          value="1"
-          sx={{ padding: 0 }}
-        >
-          <ChatList/>
-        </TabPanel>
-      </TabContext>
+          <TabPanel
+            value="1"
+            sx={{ padding: 0 }}
+          >
+            <ChatList/>
+          </TabPanel>
+        </TabContext>
+      )}
     </div>
   )
 

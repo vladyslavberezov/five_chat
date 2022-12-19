@@ -5,10 +5,10 @@ export type TAPIRequestConfig = AxiosRequestConfig & { isPublic: true };
 
 export interface IAPIService {
   authData: IAuthData;
-  get: <T>(url: string, config: TAPIRequestConfig) => Promise<AxiosResponse<T>>
-  post: <T>(url: string, data: unknown, config: TAPIRequestConfig) => Promise<AxiosResponse<T>>
-  put: <T>(url: string, config: TAPIRequestConfig) => Promise<AxiosResponse<T>>
-  delete: <T>(url: string, config: TAPIRequestConfig) => Promise<AxiosResponse<T>>
+  get: <T>(url: string, config?: TAPIRequestConfig) => Promise<AxiosResponse<T>>
+  post: <T>(url: string, data: unknown, config?: TAPIRequestConfig) => Promise<AxiosResponse<T>>
+  put: <T>(url: string, config?: TAPIRequestConfig) => Promise<AxiosResponse<T>>
+  delete: <T>(url: string, config?: TAPIRequestConfig) => Promise<AxiosResponse<T>>
 }
 
 class APIService implements IAPIService {
@@ -36,7 +36,7 @@ class APIService implements IAPIService {
     })
   }
 
-  public get = async <T>(url: string, config: TAPIRequestConfig): Promise<AxiosResponse<T>> => {
+  public get = async <T>(url: string, config?: TAPIRequestConfig): Promise<AxiosResponse<T>> => {
     let response: AxiosResponse<T>
     try {
       response = await this.axiosInstance.get<T>(url, config)
@@ -46,7 +46,7 @@ class APIService implements IAPIService {
     return response
   }
 
-  public post = async <T>(url: string, data, config: TAPIRequestConfig) => {
+  public post = async <T>(url: string, data, config?: TAPIRequestConfig) => {
     let response: AxiosResponse<T>
     try {
       response = await this.axiosInstance.post<T>(url, data, config )
@@ -56,7 +56,7 @@ class APIService implements IAPIService {
     return response
   }
 
-  public put = async <T>(url: string, config: TAPIRequestConfig) => {
+  public put = async <T>(url: string, config?: TAPIRequestConfig) => {
     let response: AxiosResponse<T>
     try {
       response = await this.axiosInstance.put(url, config)
@@ -67,7 +67,7 @@ class APIService implements IAPIService {
     return response
   }
 
-  public delete = async <T> (url: string, config: TAPIRequestConfig) => {
+  public delete = async <T> (url: string, config?: TAPIRequestConfig) => {
     let response: AxiosResponse<T>
     try {
       response = await this.axiosInstance.delete(url, config)

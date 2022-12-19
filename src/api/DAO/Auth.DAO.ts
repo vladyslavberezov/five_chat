@@ -2,7 +2,7 @@ import apiService, { IAPIService } from '../APIService'
 import { TLoginReqDTO } from 'src/api/DTO/AuthDTO/Login.req.dto'
 
 export type TAuthDAOQueries = {
-  login: (data: TLoginReqDTO) => Promise<void>;
+  login: (data: TLoginReqDTO) => Promise<any>;
 };
 
 class AuthDAO {
@@ -21,6 +21,7 @@ class AuthDAO {
           accessToken: res.data.data.accessToken,
           accessExpiresIn: res.data.data.expiresIn,
         })
+        return res.data;
       },
     }
   }

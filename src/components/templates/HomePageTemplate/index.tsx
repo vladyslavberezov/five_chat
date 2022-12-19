@@ -1,16 +1,45 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import {  useSetRecoilState } from 'recoil'
 import { AppBar, Box, CssBaseline, IconButton, MenuIcon, Toolbar, Typography } from 'components/atoms/'
+import { UsersDAO } from 'src/api/DAO'
+import { chatStore, contactStore, userStore } from 'src/store'
+import apiService from 'src/api/APIService'
 import SideBar from './SideBar'
 
 const drawerWidth = 300
 
 function HomePageTemplate() {
+  const router = useRouter()
+  const setUser = useSetRecoilState(userStore)
+  const setContacts = useSetRecoilState(contactStore)
+  const setChats = useSetRecoilState(chatStore)
   const [mobileOpen, setMobileOpen] = useState<boolean>(false)
 
   useEffect(() => {
-    // TODO: fetch contacts
-    // TODO: fetch chats
+    async function fetchData() {
+      const usersRes = await UsersDAO.getMe()
+      const userData = usersRes?.data?.data;
+      if (!userData) {
+        // TODO: show toast with error
+        return;
+      }
+      setUser(userData)
+
+      const [contactsRes, chatsRes] = await Promise.all([
+        UsersDAO.getUserContacts(userData.id),
+        UsersDAO.getUserChats(userData.id)
+      ]);
+      setContacts(contactsRes.data.data)
+      setChats(chatsRes.data.data)
+    }
+
+    if (apiService.authData.isEmpty()) {
+      router.push('/login');
+      return;
+    }
+    fetchData()
   }, [])
 
   const handleDrawerToggle = () => {
