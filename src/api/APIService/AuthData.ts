@@ -10,16 +10,15 @@ export interface IAuthData {
 }
 
 class AuthData implements IAuthData {
-  private accessToken: string;
+  private accessToken: string
 
-  private accessExpiresIn: string;
+  private accessExpiresIn: string
 
   public isEmpty = () => {
     return !Boolean(this.accessToken)
   }
 
   public set = ({ accessToken, accessExpiresIn }: TAuthObject) => {
-    console.log(accessToken, accessExpiresIn)
     this.accessToken = accessToken
     this.accessExpiresIn = accessExpiresIn
   }

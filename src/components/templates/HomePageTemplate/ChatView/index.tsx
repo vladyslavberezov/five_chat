@@ -1,4 +1,4 @@
-import { activeChatStore, messagesStore, userStore } from "src/store";
+import { activeChatStore, messagesStore, userStore } from 'src/store'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import {
   Box,
@@ -9,14 +9,43 @@ import {
   ListItemText,
   TextField,
 } from 'components/atoms/'
-import { useEffect } from "react";
-import { MessagesDAO } from "src/api/DAO";
+import { useEffect, useRef } from 'react'
+import { MessagesDAO } from 'src/api/DAO'
+import { useSocket, useSocketEvent } from 'src/sockets/socket'
 
 function ChatView() {
+  const textField = useRef<HTMLInputElement>()
+  const messagesEndRef = useRef<HTMLDivElement>()
   const user = useRecoilValue(userStore)
   const activeChat = useRecoilValue(activeChatStore)
   const [messages, setMessages] = useRecoilState(messagesStore)
-  const drawerWidth = 300
+  const socket = useSocket('/')
+  const drawerWidth = 300 //todo: move out!!!
+
+  const scrollToBottom = (behavior: ScrollBehavior) => {
+    if (messagesEndRef?.current) {
+      messagesEndRef.current.scrollIntoView({ behavior })
+    }
+  }
+
+  const handleSendMessage = () => {
+    if (activeChat && user && textField?.current) {
+      const input = textField.current
+
+      const trimmed = input.value.trim()
+      if (!trimmed.length) {
+        return
+      }
+
+      socket.emit('chat_message', {
+        chatId: activeChat.id,
+        userId: user.id,
+        message: input.value,
+      })
+      input.value = ''
+    }
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       if (activeChat) {
@@ -29,10 +58,20 @@ function ChatView() {
     }
     fetchData()
   }, [activeChat])
+
+  useEffect(() => {
+    scrollToBottom('auto')
+  }, [messages])
+
+  useSocketEvent('/', 'chat_message', ({ data }) => {
+    const updatedMessages = [...messages]
+    updatedMessages.push(data)
+    setMessages(updatedMessages)
+  })
   return activeChat && (
     <Box>
       {Boolean(messages?.length) && (
-        <List sx={{ pt: '74px' }}>
+        <List sx={{ py: '74px' }}>
           {messages.map((message) => (
             <ListItem key={message.id}>
               <Grid container>
@@ -45,7 +84,7 @@ function ChatView() {
                 <Grid item xs={12}>
                   <ListItemText
                     align={user?.id === message.authorId ? 'right' : 'left'}
-                    secondary="09:30"
+                    secondary={message.updatedAt}
                   ></ListItemText>
                 </Grid>
               </Grid>
@@ -53,6 +92,8 @@ function ChatView() {
           ))}
         </List>
       )}
+
+      <div ref={messagesEndRef}/>
 
       {/*message input*/}
       <Box
@@ -65,11 +106,23 @@ function ChatView() {
           backgroundColor: '#fff',
         }}
       >
-        <TextField id="outlined-basic-email" label="Type Something" fullWidth/>
-        <Button variant="contained"> Send </Button>
+        <TextField id="outlined-basic-email"
+                   label="Type Something"
+                   fullWidth
+                   inputRef={textField}
+                   onKeyUp={(e) => {
+                     if (e.key === 'Enter') {
+                       handleSendMessage()
+                     }
+                   }}
+        />
+        <Button
+          variant="contained"
+          onClick={handleSendMessage}
+        > Send </Button>
       </Box>
     </Box>
-  );
+  )
 }
 
 export default ChatView
