@@ -1,14 +1,25 @@
 import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText, Typography } from 'components/atoms'
-import { useRecoilValue } from 'recoil'
-import { chatStore } from 'src/store'
+import {useRecoilState, useRecoilValue} from 'recoil'
+import {activeChatStore, chatStore} from 'src/store'
+import {useCallback} from "react";
 
 function ChatList() {
   const chats = useRecoilValue(chatStore)
+  const [activeChat, setActiveChat] = useRecoilState(activeChatStore)
+
+  const handleChatSelect = useCallback((chat) => () => {
+    setActiveChat(chat);
+  }, []);
 
   return (
     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
       {chats.map((chat) => (
-        <ListItem key={chat.id} alignItems="flex-start">
+        <ListItem
+          key={chat.id}
+          alignItems="flex-start"
+          onClick={handleChatSelect(chat)}
+          sx={{ bgcolor: chat.id === activeChat?.id ? '#eee' : 'transparent' }}
+        >
           <ListItemAvatar>
             <Avatar src=""/>
           </ListItemAvatar>
