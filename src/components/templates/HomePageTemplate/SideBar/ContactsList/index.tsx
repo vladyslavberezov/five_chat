@@ -1,14 +1,25 @@
 import { Avatar, List, ListItem, ListItemIcon, ListItemText } from 'components/atoms'
-import { useRecoilValue } from 'recoil'
-import { contactStore } from 'src/store'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { activeContactStore, contactStore } from 'src/store'
+import { useCallback } from 'react'
+import { ChatDAO } from 'src/api/DAO'
 
 function ContactsList() {
   const contacts = useRecoilValue(contactStore)
-
+  const handleContactClick = useCallback((contact) => async () => {
+    console.log('contact', contact)
+    await ChatDAO.create({
+      title: `${contact.firstName} ${contact.lastName}`,
+      users: [contact.id],
+    })
+  }, [])
   return (
     <List>
       {contacts.map((contact) => (
-        <ListItem key={contact.id}>
+        <ListItem
+          key={contact.id}
+          onClick={handleContactClick(contact)}
+        >
           <ListItemIcon>
             <Avatar alt={`${contact.User.firstName} ${contact.User.lastName}`} src=""/>
           </ListItemIcon>

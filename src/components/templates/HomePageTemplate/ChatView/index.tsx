@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react'
+import * as React from 'react'
 import { activeChatStore, messagesStore, userStore } from 'src/store'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import {
@@ -6,14 +8,15 @@ import {
   Grid,
   List,
   ListItem,
-  ListItemText,
+  ListItemText, MenuIcon,
   TextField,
 } from 'components/atoms/'
-import { useEffect, useRef } from 'react'
 import { MessagesDAO } from 'src/api/DAO'
 import { useSocket, useSocketEvent } from 'src/sockets/socket'
+import { AppBar, Container, IconButton, Toolbar, Typography } from 'components/atoms'
+import { ChatViewProps } from './types'
 
-function ChatView() {
+function ChatView({ onDrawerToggle }: ChatViewProps) {
   const textField = useRef<HTMLInputElement>()
   const messagesEndRef = useRef<HTMLDivElement>()
   const user = useRecoilValue(userStore)
@@ -70,6 +73,59 @@ function ChatView() {
   })
   return activeChat && (
     <Box>
+      <AppBar
+        position="fixed"
+        sx={{
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          ml: { sm: `${drawerWidth}px` },
+        }}
+      >
+        <Container>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={onDrawerToggle}
+              sx={{ mr: 2, display: { sm: 'none' } }}
+            >
+              <MenuIcon/>
+            </IconButton>
+            <Typography variant="h6" noWrap component="div">
+              My Chat
+            </Typography>
+            {/*<IconButton*/}
+            {/*  size="large"*/}
+            {/*  aria-label="account of current user"*/}
+            {/*  aria-controls="menu-appbar"*/}
+            {/*  aria-haspopup="true"*/}
+            {/*  onClick={handleMenu}*/}
+            {/*  color="inherit"*/}
+            {/*>*/}
+            {/*  <AccountCircle />*/}
+            {/*</IconButton>*/}
+            {/*<Menu*/}
+            {/*  id="menu-appbar"*/}
+            {/*  anchorEl={anchorEl}*/}
+            {/*  anchorOrigin={{*/}
+            {/*    vertical: 'top',*/}
+            {/*    horizontal: 'right',*/}
+            {/*  }}*/}
+            {/*  keepMounted*/}
+            {/*  transformOrigin={{*/}
+            {/*    vertical: 'top',*/}
+            {/*    horizontal: 'right',*/}
+            {/*  }}*/}
+            {/*  open={Boolean(anchorEl)}*/}
+            {/*  onClose={handleClose}*/}
+            {/*>*/}
+            {/*  <MenuItem onClick={handleClose}>Profile</MenuItem>*/}
+            {/*  <MenuItem onClick={handleClose}>My account</MenuItem>*/}
+            {/*</Menu>*/}
+          </Toolbar>
+        </Container>
+      </AppBar>
+
       {Boolean(messages?.length) && (
         <List sx={{ py: '74px' }}>
           {messages.map((message) => (
@@ -106,20 +162,23 @@ function ChatView() {
           backgroundColor: '#fff',
         }}
       >
-        <TextField id="outlined-basic-email"
-                   label="Type Something"
-                   fullWidth
-                   inputRef={textField}
-                   onKeyUp={(e) => {
-                     if (e.key === 'Enter') {
-                       handleSendMessage()
-                     }
-                   }}
+        <TextField
+          id="outlined-basic-email"
+          label="Type Something"
+          fullWidth
+          inputRef={textField}
+          onKeyUp={(e) => {
+            if (e.key === 'Enter') {
+              handleSendMessage()
+            }
+          }}
         />
         <Button
           variant="contained"
           onClick={handleSendMessage}
-        > Send </Button>
+        >
+          Send
+        </Button>
       </Box>
     </Box>
   )
