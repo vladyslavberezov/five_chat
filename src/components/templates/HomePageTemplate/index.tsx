@@ -29,7 +29,32 @@ function HomePageTemplate() {
       ml: { sm: `${drawerWidth}px` },
       height: 1
     }}>
+
       <CssBaseline/>
+      <AppBar
+          position="fixed"
+          sx={{
+            width: { sm: `calc(100% - ${drawerWidth}px)` },
+            ml: { sm: `${drawerWidth}px` },
+          }}
+      >
+        <Container>
+          <Toolbar>
+            <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="start"
+                onClick={handleDrawerToggle}
+                sx={{ mr: 2, display: { sm: 'none' } }}
+            >
+              <MenuIcon/>
+            </IconButton>
+            <Typography variant="h6" noWrap component="div">
+              My Chat
+            </Typography>
+          </Toolbar>
+        </Container>
+      </AppBar>
       <SideBar open={mobileOpen} onClose={handleDrawerToggle}/>
       <ChatView onDrawerToggle={handleDrawerToggle} />
     </Container>

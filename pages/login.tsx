@@ -46,6 +46,9 @@ export default function Login() {
       [name]: value
     })
   };
+  const handleNavigateSignUp = () => {
+    router.push('/signup')
+  }
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -126,7 +129,7 @@ export default function Login() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="#" onClick={handleNavigateSignUp} variant="body2">
                   {'Don\'t have an account? Sign Up'}
                 </Link>
               </Grid>
